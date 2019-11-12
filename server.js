@@ -1,14 +1,10 @@
-
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-
-mongoose.connect(MONGODB_URI);
-
 // Dependencies
 var express = require("express");
 var mongojs = require("mongojs");
 // Require axios and cheerio. This makes the scraping possible
 var axios = require("axios");
 var cheerio = require("cheerio");
+var mongoose = require("mongoose");
 
 // Initialize Express
 var app = express();
@@ -80,6 +76,9 @@ app.get("/scrape", function(req, res) {
   res.send("Scrape Complete");
 });
 
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+
+mongoose.connect(MONGODB_URI);
 
 // Listen on port 3000
 app.listen(3000, function() {
