@@ -5,3 +5,26 @@
 .btn {
     color: red !important;
 }
+
+#one {
+    transform: translateX(15px);
+}
+
+footer {
+    background-color: black;
+    position: fixed;
+    height: 100px;
+    bottom: 0px;
+    width: 1536px;
+}
+
+#insftrtwo {
+    margin-left: 20px;
+    color: white;
+    margin-top: 50px;
+}
+
+#insftr {
+    text-align: center;
+    color: white;
+}

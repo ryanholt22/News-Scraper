@@ -27,20 +27,20 @@ app.set("view engine", "handlebars");
 
 // Hook mongojs configuration to the db variable
 var db = mongojs(databaseUrl, collections);
-db.on("error", function(error) {
+db.on("error", function (error) {
   console.log("Database Error:", error);
 });
 
 // Main route (simple Hello World Message)
-app.get("/", function(req, res) {
-    res.render("index");
-  });
+app.get("/", function (req, res) {
+  res.render("index");
+});
 
 
 // Retrieve data from the db
-app.get("/all", function(req, res) {
+app.get("/all", function (req, res) {
   // Results from the newsData collection in mongodb
-  db.newsData.find({}, function(error, found) {
+  db.newsData.find({}, function (error, found) {
     if (error) {
       console.log(error);
     }
@@ -51,13 +51,13 @@ app.get("/all", function(req, res) {
 });
 
 // Scrape data from one site and place it into the mongodb db
-app.get("/scrape", function(req, res) {
+app.get("/scrape", function (req, res) {
   // Make a request via axios for the news section of `ycombinator`
-  axios.get("https://newsapi.org/v2/everything?q=bitcoin&from=2019-10-13&sortBy=publishedAt&apiKey=05fca5a891dc40719659fa1702b70da2").then(function(response) {
+  axios.get("https://newsapi.org/v2/everything?q=bitcoin&from=2019-10-13&sortBy=publishedAt&apiKey=05fca5a891dc40719659fa1702b70da2").then(function (response) {
     // Load the html body from axios into cheerio
     var $ = cheerio.load(response.data);
     // For each element with a "title" class
-    $(".title").each(function(i, element) {
+    $(".title").each(function (i, element) {
       // Save the text and href of each link enclosed in the current element
       var title = $(element).children("a").text();
       var link = $(element).children("a").attr("href");
@@ -69,16 +69,16 @@ app.get("/scrape", function(req, res) {
           title: title,
           link: link
         },
-        function(err, inserted) {
-          if (err) {
-            // Log the error if one is encountered during the query
-            console.log(err);
-          }
-          else {
-            // Otherwise, log the inserted data
-            console.log(inserted);
-          }
-        });
+          function (err, inserted) {
+            if (err) {
+              // Log the error if one is encountered during the query
+              console.log(err);
+            }
+            else {
+              // Otherwise, log the inserted data
+              console.log(inserted);
+            }
+          });
       }
     });
   });
@@ -88,14 +88,10 @@ app.get("/scrape", function(req, res) {
 });
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-var PORT = process.env.PORT || 8080;
-
-
-
 mongoose.connect(MONGODB_URI);
 
 // Listen on port 3000
-app.listen(3000, function() {
+app.listen(3000, function () {
   console.log("App running on port 3000!");
 });
 
